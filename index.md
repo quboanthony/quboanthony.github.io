@@ -1,5 +1,7 @@
-Here you can say lots of fun things about your site.
+A Data Scientist, technology enthusiast, enjoy snow board and video games.
 
-Maybe say a some things about yourself.
+This blog will be mainly about Machine Learning, technology and other interesting topics.
 
-Or maybe what you plan to blog about.
+Hoping to build up and decorate this small "spacecraft" piece by piece.
+
+Welcome to my blog!
