@@ -5,3 +5,7 @@ This blog will be mainly about Machine Learning, technology and other interestin
 Hoping to build up and decorate this small "spacecraft" piece by piece.
 
 Welcome to my blog!
+
+数据科学家，科技爱好者，嗜好单板滑雪和电子游戏。
+
+欢迎来到我的blog！
