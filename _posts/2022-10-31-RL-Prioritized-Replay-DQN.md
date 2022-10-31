@@ -13,13 +13,13 @@ This content mainly referenced the Prioritized Experience Replay [paper](https:/
 
 ### Prioritizing with TD-error
 
-It is important to consider how the to measure the importance of each transition, so that we can talk about how to Prioritize. In this paper, the writer suggested to use TD-error as the measurement. The algorithm such as SARSA and Q-learning already update the Value-fucntion according to the TD-error $|\delta|$. In the paper, TD-error is defined as follows:
+It is important to consider how the to measure the importance of each transition, so that we can talk about how to Prioritize. In this paper, the writer suggested to use TD-error as the measurement. The algorithm such as SARSA and Q-learning already update the Value-fucntion according to the TD-error $$|\delta|$$. In the paper, TD-error is defined as follows:
 
 $$
 \delta_j=R_j+\gamma_j Q_{target}(S_j,\arg\max_a Q(S_j,a))-Q(S_{j-1},A_{j-1})
 $$
 
-Where $R_j$ is the rewards recieved after take an action, $\gamma_j$ is the discount paremeter, $Q_{target}$ means the target network.
+Where $$R_j$$ is the rewards recieved after take an action, $$\gamma_j$$ is the discount paremeter, $$Q_{target}$$ means the target network.
 
 In order to demonstrate the potential of prioritizing replay by TD-error, they firstly implemented a 'greedy TD error prioritization' algorithm, which stores the transition and its latest TD-error into a replay buffer. Then, the transition with the largest TD-error got to be replayed. If the transition has never been encountered before, it will be replayed anyway so that every transition is seen at least once.
 
@@ -33,7 +33,7 @@ The replay buffer in Prioritized replay is different from the classical DQN, bec
 
 Here is the example of the SumTree:
 
-![alt text](fig_blog_8/SumTree.png "SumTree")
+![image-sumtree](fig_blog_8/SumTree.png "SumTree")
 
 In the SumTree, every sample is only stored in the root leaves, each leaf stores one sample and its priority. In the parent leaf, it only stores the sum of the children's priorities. Just as shown in the figures above.
 
@@ -114,7 +114,7 @@ Secondly, a stochastic prioritization process is proposed instead of a greedy on
 $$
 P(i)=\frac{p^{\alpha}_{i}}{\Sigma_kp^{\alpha}_{k}}
 $$
-where $p_{i}$ is the priority of transition $i$. The hyperparameter $\alpha$ determines "how much prioritization is used". When $\alpha=0$, the transition is sampled uniformly.
+where $$p_{i}$$ is the priority of transition $i$. The hyperparameter $$\alpha$$ determines "how much prioritization is used". When $$\alpha=0$$, the transition is sampled uniformly.
 
 Thirdly, prioritized replay may lead to distribution differences between the samples and the expectation, therefore a correction on the loss function is introduced, as importance-sampling(IS) weight:
 $$
@@ -123,7 +123,7 @@ $$
 $$
 w_i=\frac{(N\cdot P(i))^{-\beta}}{\max((N\cdot P(i))^{-\beta})}=\frac{(P(i))^{-\beta}}{\max(P(i)^{-\beta})}=(\frac{p(i)}{\min(p(i))})^{-\beta}
 $$
-when $\beta=1$, the loss function is fully compensated. The loss function turned into:
+when $$\beta=1$$, the loss function is fully compensated. The loss function turned into:
 $$
 \frac{1}{m}\Sigma^{m}_{j=1}w_j(y_j-Q(\phi(S_j),A_j,w))^2
 $$
@@ -132,7 +132,7 @@ At last, everytime after we update the weights in the network, we need to re-cal
 
 ### Prioritized Replay Double DQN algorithm
 The algorthm with Prioritized Replay buffer from the original paper:
-![alt text](fig_blog_8/DDQN-PER.png "DDQN-PER algorthm")
+![image-ddpn-per](fig_blog_8/DDQN-PER.png "DDQN-PER algorthm")
 
 Based on the "Banana Navigation" project of Udacity, I have implemented the code of PER DDQN. One major difference from the former Double dqn algorthm is the introduction of Prioritized Replay buffer. Despite the implementation of the SumTree, the sampling progress is shown as follows:
 
@@ -168,6 +168,7 @@ def sample(self,n):
 Here the sampling intervals are the equally batch_size part of the total td-errors. Since the stored transitions have different td-errors, some may cover more intervals than others, whihc means more likely to be sampled under this mechanism.
 
 Moreover, the procedure of computing the td-errors and the new loss function are added in the learning process of dqn. The understanding of Pytorch would come in handy here.
+
 ```python
 def learn(self, b_idx, experiences, ISWeights, gamma):
         """Update value parameters using given batch of experience tuples.
@@ -206,6 +207,6 @@ def learn(self, b_idx, experiences, ISWeights, gamma):
 
 ```
 ### Output of the experiment
-![alt text](fig_blog_8/DDQN-PER-Navigation.png "DDQN-PER performance")
+![image-ddqn-per-navigation](fig_blog_8/DDQN-PER-Navigation.png "DDQN-PER performance")
 
 The codes reached the average score of 13 after 414 episodes. At the beginning the the learning curve, we could see the differences, it indeed learns faster than the classic dqn and double dqn.
