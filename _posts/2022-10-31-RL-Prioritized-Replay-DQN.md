@@ -41,7 +41,7 @@ With this structure, we are able to sample according to the priority. For exampl
 
 The example of SumTree's implementation is shown as below, the implementation references the work of [jaromiru]( https://github.com/jaara/AI-blog/blob/master/SumTree.py) and [Pinard](https://github.com/ljpzzz/machinelearning/blob/master/reinforcement-learning/ddqn_prioritised_replay.py).
 
-```Python
+```python
 import numpy
 
 class SumTree():
@@ -143,7 +143,7 @@ The algorthm with Prioritized Replay buffer from the original paper:
 
 Based on the "Banana Navigation" project of Udacity, I have implemented the code of PER DDQN. One major difference from the former Double dqn algorthm is the introduction of Prioritized Replay buffer. Despite the implementation of the SumTree, the sampling progress is shown as follows:
 
-```Python
+```python
 def sample(self,n):
         b_idx,b_memory, ISWeights=np.empty((n,),dtype=np.int32),deque(maxlen=n),np.empty((n,1))
         pri_seg=self.tree.total_p/n
@@ -176,7 +176,7 @@ Here the sampling intervals are the equally batch_size part of the total td-erro
 
 Moreover, the procedure of computing the td-errors and the new loss function are added in the learning process of dqn. The understanding of Pytorch would come in handy here.
 
-```Python
+```python
 def learn(self, b_idx, experiences, ISWeights, gamma):
         """Update value parameters using given batch of experience tuples.
 
