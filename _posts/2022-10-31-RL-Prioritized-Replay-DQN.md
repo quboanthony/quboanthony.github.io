@@ -33,7 +33,7 @@ The replay buffer in Prioritized replay is different from the classical DQN, bec
 
 Here is the example of the SumTree:
 
-![image-sumtree](fig_blog_8/SumTree.png "SumTree")
+![image-sumtree](/img/RL/SumTree.png)
 
 In the SumTree, every sample is only stored in the root leaves, each leaf stores one sample and its priority. In the parent leaf, it only stores the sum of the children's priorities. Just as shown in the figures above.
 
@@ -111,19 +111,25 @@ SumTree is an important block of the Prioritized Replay buffer, and there are mo
 Firstly, it's the way of storing the new comming transition into the buffer. The new transition is stored with the maximum TD-error in the buffer, if no prior TD-error located in the buffer, an error 1 could be signed for it, which means top priority.
 
 Secondly, a stochastic prioritization process is proposed instead of a greedy one (always choose the transition with the largest TD-error). Because a greedy prioritization is sensitive to noise outliers and some transition with low TD-error may never got a chance to be replayed again. In the paper, the probability of sampling one transition is defined as:
+
 $$
 P(i)=\frac{p^{\alpha}_{i}}{\Sigma_kp^{\alpha}_{k}}
 $$
+
 where $$p_{i}$$ is the priority of transition $i$. The hyperparameter $$\alpha$$ determines "how much prioritization is used". When $$\alpha=0$$, the transition is sampled uniformly.
 
 Thirdly, prioritized replay may lead to distribution differences between the samples and the expectation, therefore a correction on the loss function is introduced, as importance-sampling(IS) weight:
+
 $$
 w_i=(\frac{1}{N}\cdot\frac{1}{P(i)})^{\beta}/\max_{i}(w_i)
 $$
+
 $$
 w_i=\frac{(N\cdot P(i))^{-\beta}}{\max((N\cdot P(i))^{-\beta})}=\frac{(P(i))^{-\beta}}{\max(P(i)^{-\beta})}=(\frac{p(i)}{\min(p(i))})^{-\beta}
 $$
+
 when $$\beta=1$$, the loss function is fully compensated. The loss function turned into:
+
 $$
 \frac{1}{m}\Sigma^{m}_{j=1}w_j(y_j-Q(\phi(S_j),A_j,w))^2
 $$
@@ -131,8 +137,9 @@ $$
 At last, everytime after we update the weights in the network, we need to re-calculate the TD-error and update to the SumTree.
 
 ### Prioritized Replay Double DQN algorithm
+
 The algorthm with Prioritized Replay buffer from the original paper:
-![image-ddpn-per](fig_blog_8/DDQN-PER.png "DDQN-PER algorthm")
+![image-ddpn-per](/img/RL/DDQN-PER.png "DDQN-PER algorthm")
 
 Based on the "Banana Navigation" project of Udacity, I have implemented the code of PER DDQN. One major difference from the former Double dqn algorthm is the introduction of Prioritized Replay buffer. Despite the implementation of the SumTree, the sampling progress is shown as follows:
 
@@ -207,6 +214,7 @@ def learn(self, b_idx, experiences, ISWeights, gamma):
 
 ```
 ### Output of the experiment
-![image-ddqn-per-navigation](fig_blog_8/DDQN-PER-Navigation.png "DDQN-PER performance")
+
+![image-ddqn-per-navigation](/img/RL/DDQN-PER-Navigation.png "DDQN-PER performance")
 
 The codes reached the average score of 13 after 414 episodes. At the beginning the the learning curve, we could see the differences, it indeed learns faster than the classic dqn and double dqn.
