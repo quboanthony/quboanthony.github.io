@@ -13,7 +13,7 @@ This content mainly referenced the Prioritized Experience Replay [paper](https:/
 
 ### Prioritizing with TD-error
 
-It is important to consider how the to measure the importance of each transition, so that we can talk about how to Prioritize. In this paper, the writer suggested to use TD-error as the measurement. The algorithm such as SARSA and Q-learning already update the Value-fucntion according to the TD-error $$|\delta|$$. In the paper, TD-error is defined as follows:
+It is important to consider how the to measure the importance of each transition, so that we can talk about how to Prioritize. In this paper, the writer suggested to use TD-error as the measurement. The algorithm such as SARSA and Q-learning already update the Value-fucntion according to the TD-error $$\|\delta\|$$. In the paper, TD-error is defined as follows:
 
 $$
 \delta_j=R_j+\gamma_j Q_{target}(S_j,\arg\max_a Q(S_j,a))-Q(S_{j-1},A_{j-1})
