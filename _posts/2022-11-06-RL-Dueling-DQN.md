@@ -1,4 +1,4 @@
-## Deep Reinforcement learning Learning blog 9 - Dueling DQN
+## Deep Reinforcement learning Learning - Dueling DQN
 
 ### Intro
 
