@@ -1,4 +1,4 @@
-# ChatGPT 接入指北
+# ChatGPT 接入指南
 
 ## 未来已来
 
