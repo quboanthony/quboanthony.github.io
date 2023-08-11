@@ -1,4 +1,4 @@
-# Policy Gradient Method & REINFORCE
+# Deep Reinforcement learning Learning - Policy Gradient Method and REINFORCE
 
 ##  The big picture
 In the **black-box optimization method, such as Hill climbing**, it does not care what the objective is, or its structure. Therefore it could be
