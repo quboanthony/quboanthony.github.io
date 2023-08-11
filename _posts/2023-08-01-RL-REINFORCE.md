@@ -69,27 +69,27 @@ LOOP:
 
 ## Problem Setup
 
-We consider the trajectories of a task, for example $\tau$ defined as follows:
+We consider the trajectories of a task, for example $$\tau$$ defined as follows:
 
 $$
 \tau=(s_0,a_0,s_1,a_1,s_2,a_2,s_3,\cdots,s_H,a_H,s_{H+1})
 $$
 
-the return  from this arbitrary trajectory $\tau$  is $R(\tau)$, defined as sum of all the rewards obtained in the trajectory,
+the return  from this arbitrary trajectory $$\tau$$  is $$R(\tau)$$, defined as sum of all the rewards obtained in the trajectory,
 
 $$
 R(\tau)=r_1+r_2+r_3+\cdots+r_H+r_{H+1}
 $$
 
-Our Goal in the policy gradient methods, is to find the weights $\theta$  that maximize expected return, i.e. $\max_{\theta} U(\theta)$. By maximizing the expected return, on average, the agent experiences trajectories with high return.
+Our Goal in the policy gradient methods, is to find the weights $$\theta$$  that maximize expected return, i.e. $\max_{\theta} U(\theta)$. By maximizing the expected return, on average, the agent experiences trajectories with high return.
 
-The expected return $U(\theta)$ defined as follows:
+The expected return $$U(\theta)$$ defined as follows:
 
 $$
 U(\theta)=\Sigma_{\tau}\mathrm{P}(\tau;\theta)R(\tau)
 $$
 
-where $\mathrm{P}(\tau;\theta)$ is the probaility of trajectory $$\tau$$,  $$R(\tau)$$ is the return from an arbitrary trajectory $$\tau$$. This calculates the expectation, i.e. the weighted average of all possible values that return $$R(\tau)$$ can take.
+where $$\mathrm{P}(\tau;\theta)$$ is the probaility of trajectory $$\tau$$,  $$R(\tau)$$ is the return from an arbitrary trajectory $$\tau$$. This calculates the expectation, i.e. the weighted average of all possible values that return $$R(\tau)$$ can take.
 
 Here, we are using trajectories instead of episodes. The main reason for this is to consider both episodic and continuing tasks. That is to say, for many episodic  tasks, it makes sense to just the full episode since the rewards only deliver at the end of full episode.
 
@@ -121,19 +121,19 @@ However, by reviewing the definition  the expected return, we can see that it is
 
 Therefore, we seek for an alternative solution.  One of them is to consider **a few trajectories** and the algorithms related is known as **REINFORCE**.
 
-1. Use  the policy $$\pi_{\theta}$ to collect $m$ trajectories $\{\tau^{(1)},\tau^{(2)},\tau^{(3)},\cdots,\tau^{(m)}\}$$ with horizon $$H$$. We refer to the *i*-th trajectory as
+1. Use  the policy $$\pi_{\theta}$$ to collect $$m$$ trajectories $$\{\tau^{(1)},\tau^{(2)},\tau^{(3)},\cdots,\tau^{(m)}\}$$ with horizon $$H$$. We refer to the *i*-th trajectory as
 
 $$
 \tau^{(i)}=(s_{0}^{(i)},a_{0}^{(i)},\cdots,s_{H}^{(i)},a_{H}^{(i)},s_{H+1}^{(i)})
 $$
 
-2. Use the trajectories to estimate gradient $\nabla_\theta U(\theta)$:
+2. Use the trajectories to estimate gradient $$\nabla_\theta U(\theta)$$:
 
 $$
 \nabla_\theta U(\theta)\approx \hat{g}:=\frac{1}{m}\Sigma_{i=1}^{m}\Sigma_{t=0}^{H}\nabla_\theta\log\pi_\theta(a_{t}^{(i)}|s_{t}^{(i)})R(\tau^{(i)})
 $$
 
-where $\hat{g}$ is the estimation of $\nabla_\theta U(\theta)$ .
+where $$\hat{g}$$ is the estimation of $$\nabla_\theta U(\theta)$$ .
 
 3. Update the weights of the policy:
 
@@ -184,7 +184,7 @@ $$
 \nabla_\theta U(\theta)\approx\frac{1}{m}\Sigma_{i=1}^{m}\nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)R(\tau^{(i)})
 $$
 
-where each $\tau^{(i)}$ is  a sampled  trajectory.
+where each $$\tau^{(i)}$$ is  a sampled  trajectory.
 
 ### Finishing the Calculation
 
