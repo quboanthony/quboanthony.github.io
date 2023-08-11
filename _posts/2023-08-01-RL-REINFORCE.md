@@ -6,15 +6,15 @@ In the **black-box optimization method, such as Hill climbing**, it does not car
 - takes forever to converge.
 
 **The Policy Gradient method** update the parameters in the direction of increasing gradient, and iterate.
-- policy: $\pi$
-- Objective: $J(\theta)$
-- Gradient: $\nabla_\theta J(\theta)$
-- Udpdate: $\theta\leftarrow\theta+\alpha\nabla_\theta J(\theta)$
+- policy: $$\pi$$
+- Objective: $$J(\theta)$$
+- Gradient: $$\nabla_\theta J(\theta)$$
+- Udpdate: $$\theta\leftarrow\theta+\alpha\nabla_\theta J(\theta)$$
 
 **It is possible to not find the gradient directly if the underlying policy is complicated.** In this case, you can estimate the gradient using finite differences.
 
 ### Finite differences
-For $k\in[1,n]$:
+For $$k\in[1,n]$$:
 
 Estimate:
 
@@ -22,7 +22,7 @@ $$
 \frac{\partial J({\theta})}{\partial\theta_k}\approx \frac{J(\theta+\epsilon u_k)-J(\theta)}{\epsilon}
 $$
 
-where $\epsilon$ means a tiny step and $u_k$ means unit vector in $k^{th}$ dimension.
+where $$\epsilon$$ means a tiny step and $$u_k$$ means unit vector in $$k^{th}$$ dimension.
 
 Collect all the partial derivatives into a single vector to get the combined derivative.
 
@@ -47,8 +47,8 @@ $$
 \nabla_\theta J(\theta)=\nabla_{\theta}E_{\theta}[R(\tau)]=E_{\pi}[\nabla_\theta(\log \pi(s,a,\theta))R(\tau)]
 $$
 
-where $E_{\pi}$ is the expectation
-$\pi$ is the policy function which we can represent by a neural network.
+where $$E_{\pi}$$ is the expectation
+$$\pi$$ is the policy function which we can represent by a neural network.
 
 $$
 \nabla\theta=\alpha\nabla_\theta(\log\pi(s,a,\theta))R(\tau)
@@ -89,21 +89,21 @@ $$
 U(\theta)=\Sigma_{\tau}\mathrm{P}(\tau;\theta)R(\tau)
 $$
 
-where $\mathrm{P}(\tau;\theta)$ is the probaility of trajectory $\tau$,  $R(\tau)$ is the return from an arbitrary trajectory $\tau$. This calculates the expectation, i.e. the weighted average of all possible values that return $R(\tau)$ can take.
+where $\mathrm{P}(\tau;\theta)$ is the probaility of trajectory $$\tau$$,  $$R(\tau)$$ is the return from an arbitrary trajectory $$\tau$$. This calculates the expectation, i.e. the weighted average of all possible values that return $$R(\tau)$$ can take.
 
 Here, we are using trajectories instead of episodes. The main reason for this is to consider both episodic and continuing tasks. That is to say, for many episodic  tasks, it makes sense to just the full episode since the rewards only deliver at the end of full episode.
 
 ## REINFORCE (Monte Carlo policy gradient)
 
-REINFORCE is one of the algorithms  to estimate $\max_{\theta} U(\theta)$. It belongs to the **gradient ascent** method.
+REINFORCE is one of the algorithms  to estimate $$\max_{\theta} U(\theta)$$. It belongs to the **gradient ascent** method.
 
-We learned that for policy  gradient methods, our goal is to  find the values of the weights $\theta$ in the neural network that maximize the expected  return $U$.
+We learned that for policy  gradient methods, our goal is to  find the values of the weights $$\theta$$ in the neural network that maximize the expected  return $$U$$.
 
 $$
 U(\theta)=\Sigma_{\tau}\mathrm{P}(\tau;\theta)R(\tau)
 $$
 
-where $\tau$ is an arbitrary trajectory. **gradient ascent** is one way to determine the value of $\theta$ that maximizes this expected return function.
+where $$\tau$$ is an arbitrary trajectory. **gradient ascent** is one way to determine the value of $$\theta$$ that maximizes this expected return function.
 
 The connections between **gradient ascent** and **gradient descent** is That
 
@@ -111,17 +111,17 @@ The connections between **gradient ascent** and **gradient descent** is That
 
 - gradient descent  steps in the direction  of the **negative gradient**, whereas  gradient ascent steps in the direction of the **gradient**.
 
-In each time step, we can update our parameter $\theta$ with :
+In each time step, we can update our parameter $$\theta$$ with :
 
 $$
 \theta\leftarrow\theta+\alpha\nabla_\theta U(\theta)
 $$
 
-However, by reviewing the definition  the expected return, we can see that it is impossible to calculate the gradient $\nabla_\theta U(\theta)$ directly, since we have consider every possible trajectory before calculating the gradient.
+However, by reviewing the definition  the expected return, we can see that it is impossible to calculate the gradient $$\nabla_\theta U(\theta)$$ directly, since we have consider every possible trajectory before calculating the gradient.
 
 Therefore, we seek for an alternative solution.  One of them is to consider **a few trajectories** and the algorithms related is known as **REINFORCE**.
 
-1. Use  the policy $\pi_{\theta}$ to collect $m$ trajectories $\{\tau^{(1)},\tau^{(2)},\tau^{(3)},\cdots,\tau^{(m)}\}$ with horizon $H$. We refer to the *i*-th trajectory as
+1. Use  the policy $$\pi_{\theta}$ to collect $m$ trajectories $\{\tau^{(1)},\tau^{(2)},\tau^{(3)},\cdots,\tau^{(m)}\}$$ with horizon $$H$$. We refer to the *i*-th trajectory as
 
 $$
 \tau^{(i)}=(s_{0}^{(i)},a_{0}^{(i)},\cdots,s_{H}^{(i)},a_{H}^{(i)},s_{H+1}^{(i)})
@@ -174,7 +174,7 @@ $$
 =\Sigma_{\tau}P(\tau;\theta)\nabla_\theta\log P(\tau;\theta)R(\tau)
 $$
 
-The simple trick $\nabla_{\theta}\log P(\tau;\theta)=\frac{\nabla_\theta P(\tau;\theta)}{P(\tau;\theta)}$ is referred to as **Likelihood ratio trick** or **REINFORCE trick**.
+The simple trick $$\nabla_{\theta}\log P(\tau;\theta)=\frac{\nabla_\theta P(\tau;\theta)}{P(\tau;\theta)}$$ is referred to as **Likelihood ratio trick** or **REINFORCE trick**.
 
 ### Sample-Based Estimate
 
@@ -188,7 +188,7 @@ where each $\tau^{(i)}$ is  a sampled  trajectory.
 
 ### Finishing the Calculation
 
-Here we still need to know how to calculate $\nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)$ in practice. What we have so far is a policy function $\tau_\theta$, which is estimated with the parameters $\theta$.  Hence we can furtherly finishing the calculation with finding the connection between $\nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)$ and $\tau_\theta$:
+Here we still need to know how to calculate $$\nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)$$ in practice. What we have so far is a policy function $$\tau_\theta$$, which is estimated with the parameters $$\theta$$.  Hence we can furtherly finishing the calculation with finding the connection between $$\nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)$$ and $$\tau_\theta$$:
 
 $$
 \nabla_\theta\log\mathrm{P} (\tau^{(i)};\theta)=\nabla_\theta\log\left[\Pi_{t=0}^{H}\mathrm{P}(
